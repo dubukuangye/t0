@@ -1,21 +1,16 @@
 # !/bin/sh
 
-CODE="600615"
+CODE=$1
 CURR_DIR=$(pwd)
 #DEST_DIR="${CURR_DIR}/RealData/SZE/SZA/"
-DEST_DIR="${CURR_DIR}/RealData/SSE/SHA/"
+DEST_DIR="${CURR_DIR}/RealData/$2"
 
-DAY_LIST="list.day"
-
-day_count_str=$(wc -l ${DAY_LIST} |awk '{print $1}')
-day_count=$(expr $day_count_str)
-i=0
-while [ $i -lt $day_count ]
+for f in $(ls sh.tick.out-*.csv)
 do
-	read day
+    day=$(echo $f|cut -d'-' -f2|cut -d'.' -f1)
 	echo "[info]: proccesing day[${day}]"
 	mkdir -p ${DEST_DIR}/${day}/tick
-	mv ./sh.tick.out-${day}.csv ${DEST_DIR}/${day}/tick/${CODE}.csv
-	i=$(expr $i + 1)
-done < ${DAY_LIST}
+	#mv ./sh.tick.out-${day}.csv ${DEST_DIR}/${day}/tick/${CODE}.csv
+	mv ./$f ${DEST_DIR}/${day}/tick/${CODE}.csv
+done
 echo "[info]: finish"
